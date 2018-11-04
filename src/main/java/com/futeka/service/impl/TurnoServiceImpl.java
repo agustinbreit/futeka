@@ -1,17 +1,25 @@
 package com.futeka.service.impl;
 
+import com.futeka.domain.QTurno;
+import com.futeka.domain.enumeration.EstadoTurnoEnum;
 import com.futeka.service.TurnoService;
 import com.futeka.domain.Turno;
 import com.futeka.repository.TurnoRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -82,9 +90,35 @@ public class TurnoServiceImpl implements TurnoService {
     }
 
     @Override
-    public Page<Turno> findTurnosByDate(Turno turno) {
-        //JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-//        List<Linea> lineas = queryFactory.from(QLinea.linea)
-        return null;
+    public Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable) {
+        ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
+        ZonedDateTime startTime = turno.getFechaTurno().withZoneSameLocal(zone);
+        ZonedDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        List<Turno> turnosToReturn = new ArrayList<Turno>();
+        do {
+            JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+            QTurno qTurno = QTurno.turno;
+            BooleanBuilder booleanBuilder = new BooleanBuilder(qTurno.cancha().id.eq(turno.getCancha().getId()).and(qTurno.fechaTurno.eq(startTime)));
+            booleanBuilder.or(new BooleanBuilder(qTurno.turnoFijo.isTrue().and(qTurno.cancha().id.eq(turno.getCancha().getId())).and(qTurno.diaDeSemana.eq(turno.getDiaDeSemana())).and(qTurno.fechaTurno.hour().eq(startTime.getHour()))));
+
+            Turno _turno = queryFactory.from(qTurno)
+                .select(qTurno).distinct()
+                .where(booleanBuilder).fetchFirst();
+            if(_turno!=null){
+                turnosToReturn.add(_turno);
+            }else {
+                Turno turnoToAdd = new Turno();
+                turnoToAdd.setCancha(turno.getCancha());
+                turnoToAdd.setEstado(EstadoTurnoEnum.LIBRE);
+                turnoToAdd.setDiaDeSemana(turno.getDiaDeSemana());
+                turnoToAdd.setFechaTurno(startTime.withZoneSameLocal(zone));
+                turnosToReturn.add(turnoToAdd);
+            }
+            startTime = startTime.plusHours(1);
+        }while (startTime.isBefore(endTime));
+
+        Page<Turno> turnoPage =  new PageImpl<>(turnosToReturn,pageable,turnosToReturn.size());
+
+        return turnoPage;
     }
 }

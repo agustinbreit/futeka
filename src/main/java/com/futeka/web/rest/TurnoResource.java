@@ -7,6 +7,7 @@ import com.futeka.web.rest.errors.BadRequestAlertException;
 import com.futeka.web.rest.util.HeaderUtil;
 import com.futeka.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -131,11 +132,11 @@ public class TurnoResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new turno, or with status 400 (Bad Request) if the turno has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/turnos/findTurnosByDate")
+    @PostMapping("/turnos/findTurnosByCancha")
     @Timed
-    public ResponseEntity<List<Turno>> findTurnosByDate(@RequestBody Turno turno) throws URISyntaxException {
+    public ResponseEntity<List<Turno>> findTurnosByCancha(@RequestBody Turno turno, @ApiParam Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Turnos");
-        Page<Turno> page = turnoService.findTurnosByDate(turno);
+        Page<Turno> page = turnoService.findTurnosByCancha(turno, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/turnos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

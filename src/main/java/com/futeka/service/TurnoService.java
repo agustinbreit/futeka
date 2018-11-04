@@ -40,5 +40,5 @@ public interface TurnoService {
      */
     void delete(Long id);
 
-    Page<Turno> findTurnosByDate(Turno turno);
+    Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable);
 }

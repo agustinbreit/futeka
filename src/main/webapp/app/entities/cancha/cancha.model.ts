@@ -1,6 +1,7 @@
 import { BaseEntity } from './../../shared';
+import { Turno } from '../turno';
 
-export const enum TipoCanchaEnum {
+export enum TipoCanchaEnum {
     'CINCO',
     'SEIS',
     'SIETE'
@@ -12,7 +13,7 @@ export class Cancha implements BaseEntity {
         public nombre?: string,
         public tipo?: TipoCanchaEnum,
         public precio?: number,
-        public turnos?: BaseEntity[],
+        public turnos?: Turno[],
     ) {
     }
 }

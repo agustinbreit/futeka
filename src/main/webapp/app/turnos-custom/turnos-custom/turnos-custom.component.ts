@@ -19,7 +19,7 @@ export class TurnosCustomComponent implements OnInit {
 
     findCanchasAndTurnos(date?: Date) {
         const now = date;
-        now.setHours(13);
+        now.setUTCHours(13);
         now.setMinutes(0);
         now.setSeconds(0);
         now.setMilliseconds(0);
@@ -27,12 +27,16 @@ export class TurnosCustomComponent implements OnInit {
         this.canchaService.query()
             .subscribe((res: HttpResponse<Cancha[]>) => {
                     this.canchas = res.body;
-                    for(const cancha of this.canchas) {
+                    for (const cancha of this.canchas) {
                         const turno = new Turno();
                         turno.cancha = cancha;
                         turno.diaDeSemana = now.getDay();
                         turno.fechaTurno = now;
-                        this.turnosService.query();
+                        this.turnosService.findTurnosByCancha(turno)
+                            .subscribe((res: HttpResponse<Turno[]>) => {
+                                cancha.turnos = res.body;
+                                console.log(cancha.turnos);
+                            });
                     }
                 },
             );

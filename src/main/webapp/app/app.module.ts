@@ -1,6 +1,6 @@
 import './vendor.ts';
 
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Ng2Webstorage, LocalStorageService, SessionStorageService  } from 'ngx-webstorage';
@@ -30,7 +30,14 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import { TurnosCustomModule } from './turnos-custom/turnos-custom.module';
-
+// import { registerLocaleData } from '@angular/common';
+// import localeEsAr from '@angular/common/locales/es-AR';
+//
+// registerLocaleData(localeEsAr);
+//
+// export function getLang() {
+//     return 'es-AR';
+// }
 @NgModule({
     imports: [
         BrowserModule,
@@ -58,6 +65,10 @@ import { TurnosCustomModule } from './turnos-custom/turnos-custom.module';
         ProfileService,
         PaginationConfig,
         UserRouteAccessService,
+        {
+            provide: LOCALE_ID,
+            useValue: 'es-AR'
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

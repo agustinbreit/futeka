@@ -40,6 +40,11 @@ export class TurnoService {
             .map((res: HttpResponse<Turno[]>) => this.convertArrayResponse(res));
     }
 
+    findTurnosByCancha(cancha?: any): Observable<HttpResponse<Turno[]>> {
+        return this.http.post<Turno[]>(this.resourceUrl + '/findTurnosByCancha', cancha, { observe: 'response' })
+            .map((res: HttpResponse<Turno[]>) => this.convertArrayResponse(res));
+    }
+
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
