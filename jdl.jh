@@ -1,0 +1,29 @@
+entity Cancha {
+	tipo TipoCanchaEnum,
+    precio BigDecimal
+}
+entity Turno {
+	nombre String,
+    telefono String,
+    fechaTurno ZonedDateTime,
+    turnoFijo Boolean,
+    estado EstadoTurnoEnum
+}
+
+enum TipoCanchaEnum {
+    CINCO, SEIS, SIETE
+}
+enum EstadoTurnoEnum{
+	RESERVADO, CANCELADO, ASISTIDO
+}
+
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Cancha{turnos} to Turno{cancha}
+}
+
+
+paginate * with pagination
+// Set service options to all except few
+service all with serviceImpl 

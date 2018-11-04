@@ -1,0 +1,10 @@
+{
+    "futekaApp": {
+        "TipoCanchaEnum" : {
+            "null": "",
+            "CINCO": "CINCO",
+            "SEIS": "SEIS",
+            "SIETE": "SIETE"
+        }
+    }
+}

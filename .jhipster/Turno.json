@@ -1,0 +1,44 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "cancha",
+            "otherEntityName": "cancha",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "telefono",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fechaTurno",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "diaDeSemana",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "turnoFijo",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "estado",
+            "fieldType": "EstadoTurnoEnum",
+            "fieldValues": "LIBRE,RESERVADO,CANCELADO,ASISTIDO"
+        }
+    ],
+    "changelogDate": "20181030214510",
+    "entityTableName": "turno",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

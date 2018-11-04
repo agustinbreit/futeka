@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "turnos",
+            "otherEntityName": "turno",
+            "otherEntityRelationshipName": "cancha"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "nombre",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tipo",
+            "fieldType": "TipoCanchaEnum",
+            "fieldValues": "CINCO,SEIS,SIETE"
+        },
+        {
+            "fieldName": "precio",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20181030214509",
+    "entityTableName": "cancha",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false
+}

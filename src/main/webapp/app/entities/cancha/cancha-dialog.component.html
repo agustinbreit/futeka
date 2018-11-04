@@ -1,0 +1,43 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCanchaLabel" jhiTranslate="futekaApp.cancha.home.createOrEditLabel">Create or edit a Cancha</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!cancha.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="cancha.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.cancha.nombre" for="field_nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="field_nombre"
+                [(ngModel)]="cancha.nombre" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.cancha.tipo" for="field_tipo">Tipo</label>
+            <select class="form-control" name="tipo" [(ngModel)]="cancha.tipo" id="field_tipo" >
+                <option value="CINCO">{{'futekaApp.TipoCanchaEnum.CINCO' | translate}}</option>
+                <option value="SEIS">{{'futekaApp.TipoCanchaEnum.SEIS' | translate}}</option>
+                <option value="SIETE">{{'futekaApp.TipoCanchaEnum.SIETE' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.cancha.precio" for="field_precio">Precio</label>
+            <input type="number" class="form-control" name="precio" id="field_precio"
+                [(ngModel)]="cancha.precio" />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,11 @@
+{
+    "futekaApp": {
+        "EstadoTurnoEnum" : {
+            "null": "",
+            "LIBRE": "LIBRE",
+            "RESERVADO": "RESERVADO",
+            "CANCELADO": "CANCELADO",
+            "ASISTIDO": "ASISTIDO"
+        }
+    }
+}

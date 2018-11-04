@@ -1,0 +1,28 @@
+
+{
+    "futekaApp": {
+        "turno" : {
+            "home": {
+                "title": "Turnos",
+                "createLabel": "Crear nuevo Turno",
+                "createOrEditLabel": "Crear o editar Turno"
+            },
+            "created": "Un nuevo Turno ha sido creado con el identificador {{ param }}",
+            "updated": "Un Turno ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Turno ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Turno {{ id }}?"
+            },
+            "detail": {
+                "title": "Turno"
+            },
+            "nombre": "Nombre",
+            "telefono": "Telefono",
+            "fechaTurno": "Fecha Turno",
+            "diaDeSemana": "Dia De Semana",
+            "turnoFijo": "Turno Fijo",
+            "estado": "Estado",
+            "cancha": "Cancha"
+        }
+    }
+}

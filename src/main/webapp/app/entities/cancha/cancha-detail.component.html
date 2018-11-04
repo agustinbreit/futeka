@@ -1,0 +1,34 @@
+
+<div *ngIf="cancha">
+    <h2><span jhiTranslate="futekaApp.cancha.detail.title">Cancha</span> {{cancha.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="futekaApp.cancha.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{cancha.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.cancha.tipo">Tipo</span></dt>
+        <dd>
+            <span jhiTranslate="{{'futekaApp.TipoCanchaEnum.' + cancha.tipo}}">{{cancha.tipo}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.cancha.precio">Precio</span></dt>
+        <dd>
+            <span>{{cancha.precio}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'cancha/'+ cancha.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

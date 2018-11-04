@@ -1,0 +1,68 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myTurnoLabel" jhiTranslate="futekaApp.turno.home.createOrEditLabel">Create or edit a Turno</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!turno.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="turno.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.nombre" for="field_nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="field_nombre"
+                [(ngModel)]="turno.nombre" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.telefono" for="field_telefono">Telefono</label>
+            <input type="text" class="form-control" name="telefono" id="field_telefono"
+                [(ngModel)]="turno.telefono" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.fechaTurno" for="field_fechaTurno">Fecha Turno</label>
+            <div class="d-flex">
+                <input id="field_fechaTurno" type="datetime-local" class="form-control" name="fechaTurno" [(ngModel)]="turno.fechaTurno"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.diaDeSemana" for="field_diaDeSemana">Dia De Semana</label>
+            <input type="number" class="form-control" name="diaDeSemana" id="field_diaDeSemana"
+                [(ngModel)]="turno.diaDeSemana" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.turnoFijo" for="field_turnoFijo">Turno Fijo</label>
+            <input type="checkbox" class="form-control" name="turnoFijo" id="field_turnoFijo"
+                [(ngModel)]="turno.turnoFijo" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.estado" for="field_estado">Estado</label>
+            <select class="form-control" name="estado" [(ngModel)]="turno.estado" id="field_estado" >
+                <option value="LIBRE">{{'futekaApp.EstadoTurnoEnum.LIBRE' | translate}}</option>
+                <option value="RESERVADO">{{'futekaApp.EstadoTurnoEnum.RESERVADO' | translate}}</option>
+                <option value="CANCELADO">{{'futekaApp.EstadoTurnoEnum.CANCELADO' | translate}}</option>
+                <option value="ASISTIDO">{{'futekaApp.EstadoTurnoEnum.ASISTIDO' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="futekaApp.turno.cancha" for="field_cancha">Cancha</label>
+            <select class="form-control" id="field_cancha" name="cancha" [(ngModel)]="turno.cancha" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="canchaOption.id === turno.cancha?.id ? turno.cancha : canchaOption" *ngFor="let canchaOption of canchas; trackBy: trackCanchaById">{{canchaOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

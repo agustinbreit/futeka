@@ -1,0 +1,70 @@
+<div>
+    <h2>
+        <span jhiTranslate="futekaApp.cancha.home.title">Canchas</span>
+        <button class="btn btn-primary float-right jh-create-entity create-cancha" [routerLink]="['/', { outlets: { popup: ['cancha-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="futekaApp.cancha.home.createLabel">
+            Create new Cancha
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="canchas">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="nombre"><span jhiTranslate="futekaApp.cancha.nombre">Nombre</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="tipo"><span jhiTranslate="futekaApp.cancha.tipo">Tipo</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="precio"><span jhiTranslate="futekaApp.cancha.precio">Precio</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let cancha of canchas ;trackBy: trackId">
+                <td><a [routerLink]="['../cancha', cancha.id ]">{{cancha.id}}</a></td>
+                <td>{{cancha.nombre}}</td>
+                <td jhiTranslate="{{'futekaApp.TipoCanchaEnum.' + cancha.tipo}}">{{cancha.tipo}}</td>
+                <td>{{cancha.precio}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../cancha', cancha.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'cancha/'+ cancha.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'cancha/'+ cancha.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="canchas && canchas.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

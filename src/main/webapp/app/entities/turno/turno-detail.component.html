@@ -1,0 +1,52 @@
+
+<div *ngIf="turno">
+    <h2><span jhiTranslate="futekaApp.turno.detail.title">Turno</span> {{turno.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="futekaApp.turno.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{turno.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.telefono">Telefono</span></dt>
+        <dd>
+            <span>{{turno.telefono}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.fechaTurno">Fecha Turno</span></dt>
+        <dd>
+            <span>{{turno.fechaTurno | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.diaDeSemana">Dia De Semana</span></dt>
+        <dd>
+            <span>{{turno.diaDeSemana}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.turnoFijo">Turno Fijo</span></dt>
+        <dd>
+            <span>{{turno.turnoFijo}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.estado">Estado</span></dt>
+        <dd>
+            <span jhiTranslate="{{'futekaApp.EstadoTurnoEnum.' + turno.estado}}">{{turno.estado}}</span>
+        </dd>
+        <dt><span jhiTranslate="futekaApp.turno.cancha">Cancha</span></dt>
+        <dd>
+            <div *ngIf="turno.cancha">
+                <a [routerLink]="['/cancha', turno.cancha?.id]">{{turno.cancha?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'turno/'+ turno.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
