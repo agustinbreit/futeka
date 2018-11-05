@@ -1,6 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export const enum EstadoTurnoEnum {
+export enum EstadoTurnoEnum {
     'LIBRE',
     'RESERVADO',
     'CANCELADO',

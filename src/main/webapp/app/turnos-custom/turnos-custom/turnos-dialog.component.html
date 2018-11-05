@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>{{data.accion == 'baja'? 'Baja de Turno': 'Cancelacion de Turno'}}</h1>
+<div mat-dialog-content>
+    <p>{{data.accion == 'baja'? 'Se dará de baja el turno Fijo, deseas Continuar?':'Seguro que deseas cancelar el Turno?'}}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No</button>
+    <button mat-button (click)="actualizarTurno()" cdkFocusInitial>Ok</button>
+</div>

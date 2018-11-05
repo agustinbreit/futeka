@@ -21,13 +21,29 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
-                    <mat-form-field>
-                        <input matInput placeholder="First name">
-                    </mat-form-field>
 
-                    <mat-form-field>
-                        <input matInput placeholder="Age">
-                    </mat-form-field>
+                    <mat-card *ngIf="turno.estado == 'RESERVADO'">
+                        <mat-card-header>
+                            <mat-card-title ><mat-icon>account_circle</mat-icon><span style="padding-left: 5px;">{{turno.nombre}}</span></mat-card-title>
+                            <mat-card-subtitle style=" display: inline-flex;    vertical-align: middle;"><i class="material-icons">settings_phone</i><span style="padding-left: 5px;">{{turno.telefono}}</span></mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-slide-toggle
+                                class="example-margin"
+                                [checked]="turno.turnoFijo"
+                                [disabled]="true"
+                                >
+                                Turno Fijo
+                            </mat-slide-toggle>
+                        </mat-card-content>
+                        <mat-card-actions align="end">
+                            <button mat-raised-button color="warn" style="flex: 1 1 auto;" (click)="darDeBajaDialog(turno)" *ngIf="turno.turnoFijo">Dar De Baja</button>
+                            <button mat-raised-button color="primary" style="flex: 1 1 auto;" (click)="cancelarDialog(turno)">Cancelar Turno</button>
+                        </mat-card-actions>
+                    </mat-card>
+
+
+
                 </mat-expansion-panel>
             </mat-accordion>
         </mat-expansion-panel>
