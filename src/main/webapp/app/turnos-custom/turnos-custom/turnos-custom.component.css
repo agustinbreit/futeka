@@ -10,3 +10,13 @@
     vertical-align: middle !important;
     padding-bottom: 3px;
 }
+
+.example-full-width {
+    width: 100%;
+}
+.ng-invalid:not(form) {
+    border-left: 0px !important;
+}
+.ng-valid[required], .ng-valid.required {
+    border-left: 0px !important;
+}

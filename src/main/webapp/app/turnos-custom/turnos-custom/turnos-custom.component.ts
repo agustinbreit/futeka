@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Cancha, CanchaService } from '../../entities/cancha';
 import { HttpResponse } from '@angular/common/http';
 import { EstadoTurnoEnum, Turno, TurnoService } from '../../entities/turno';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
+import { NgForm} from '@angular/forms';
 
 export interface DialogData {
     turno: Turno;
@@ -18,9 +19,14 @@ export interface DialogData {
 export class TurnosCustomComponent implements OnInit {
     canchas: Cancha[];
     now: any;
+    @ViewChild('editForm') editForm: NgForm;
+    //nombre = new FormControl('', [Validators.required, Validators.minLength(3)]);
     constructor(private canchaService: CanchaService,
                 private turnosService: TurnoService,
-                public dialog: MatDialog
+                public dialog: MatDialog,
+                private turnoService: TurnoService,
+                private datePipe: DatePipe,
+                public snackBar: MatSnackBar
                ) { }
 
     ngOnInit() {
@@ -58,9 +64,8 @@ export class TurnosCustomComponent implements OnInit {
             data: {accion: 'baja', 'turno': turno}
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed');
-            console.log(result);
             turno = result;
+            this.snackBar.open( 'Turno dado de Baja', null, {duration: 500});
         });
     }
     cancelarDialog(turno) {
@@ -69,10 +74,44 @@ export class TurnosCustomComponent implements OnInit {
             data: {accion: 'cancelar', 'turno': turno}
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log('The dialog was closed');
-            console.log(result);
             turno = result;
+            this.snackBar.open( 'Turno Cancelado', null, {duration: 500});
         });
+    }
+
+    guardarTurno(turno) {
+        turno.fechaTurno = this.datePipe
+            .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
+
+        this.turnoService.find(turno.id)
+            .subscribe((turnoResponse: HttpResponse<Turno>) => {
+                const _turno: Turno = turnoResponse.body;
+                _turno.fechaTurno = this.datePipe
+                    .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
+               console.log(turno);
+               if (_turno.estado == 'RESERVADO') {
+                   this.snackBar.openFromComponent( SnackBarErrorComponent, {duration: 500});
+               }else {
+                   turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO];
+                   this.turnoService.update(turno).
+                   subscribe((res: HttpResponse<Turno>) => {
+                       turno = res.body;
+                       this.snackBar.open( 'Turno Reservado Correctamente', null, {duration: 500});
+                   });
+               }
+        });
+    }
+    getColor(turno) {
+        if (!turno) return 'black';
+        let color;
+        switch (turno.estado) {
+            case 'CANCELADO': color = 'red'; break;
+            case 'RESERVADO': color = 'blue'; break;
+            case 'ASISTIDO': color = 'blue'; break;
+            case 'LIBRE': color = 'green'; break;
+            default: color = 'blue';
+        }
+        return color;
     }
 
 }
@@ -100,17 +139,26 @@ export class TurnosDialogPopUpComponent {
             this.data.turno.turnoFijo = false;
             this.turnoService.update(this.data.turno).
                 subscribe((res: HttpResponse<Turno>) => {
-                    res.body.estado = EstadoTurnoEnum[EstadoTurnoEnum[res.body.estado]];
+                    res.body.estado = EstadoTurnoEnum[res.body.estado];
                     this.dialogRef.close(res.body);
             });
         }else {
-            this.data.turno.estado = EstadoTurnoEnum.CANCELADO;
+            this.data.turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.CANCELADO];
             this.turnoService.update(this.data.turno).
             subscribe((res: HttpResponse<Turno>) => {
-                res.body.estado = EstadoTurnoEnum[EstadoTurnoEnum[res.body.estado]];
                 this.dialogRef.close(res.body);
             });
         }
     }
-
 }
+
+@Component({
+    selector: 'jhi-snack-bar-component-error',
+    template: '<div class="color-red">El Turno fue Tomado por otra persona. Actualizar!</div>',
+    styles: [`
+    .color-red {
+      color: orangered;
+    }
+  `],
+})
+export class SnackBarErrorComponent { }

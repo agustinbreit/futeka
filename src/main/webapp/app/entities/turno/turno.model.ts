@@ -15,7 +15,7 @@ export class Turno implements BaseEntity {
         public fechaTurno?: any,
         public diaDeSemana?: number,
         public turnoFijo?: boolean,
-        public estado?: EstadoTurnoEnum,
+        public estado?: string,
         public cancha?: BaseEntity,
     ) {
         this.turnoFijo = false;

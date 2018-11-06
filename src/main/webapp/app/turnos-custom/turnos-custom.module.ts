@@ -1,5 +1,8 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { TurnosCustomComponent, TurnosDialogPopUpComponent } from './turnos-custom/turnos-custom.component';
+import {
+    SnackBarErrorComponent, TurnosCustomComponent,
+    TurnosDialogPopUpComponent
+} from './turnos-custom/turnos-custom.component';
 import { TurnosCustomResolvePagingParams, turnosRoute } from './turnos-custom/turnos.custom.route';
 import { RouterModule } from '@angular/router';
 import { FutekaSharedModule } from '../shared';
@@ -11,6 +14,7 @@ const ENTITY_STATES = [
 ];
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
+import { ReactiveFormsModule } from '@angular/forms';
 
 registerLocaleData(localeEsAr);
 
@@ -26,11 +30,13 @@ export function getLang() {
     ],
     declarations: [
         TurnosCustomComponent,
-        TurnosDialogPopUpComponent
+        TurnosDialogPopUpComponent,
+        SnackBarErrorComponent
     ],
     entryComponents: [
         TurnosCustomComponent,
-        TurnosDialogPopUpComponent
+        TurnosDialogPopUpComponent,
+        SnackBarErrorComponent
     ],
     providers: [
         TurnosCustomResolvePagingParams,

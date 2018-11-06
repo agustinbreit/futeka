@@ -1,7 +1,11 @@
 <div class="footer">
     <mat-toolbar color="primary">
         <mat-toolbar-row>
-            <mat-icon style="padding: 0 14px;" >favorite</mat-icon>
+            <mat-form-field class="example-full-width">
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
             <span style="flex: 1 1 auto;"></span>
             <mat-icon style="padding: 0 14px;">delete</mat-icon>
         </mat-toolbar-row>

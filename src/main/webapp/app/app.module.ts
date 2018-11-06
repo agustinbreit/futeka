@@ -30,6 +30,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material-module';
 import { TurnosCustomModule } from './turnos-custom/turnos-custom.module';
+import { MatInputModule } from '@angular/material';
 // import { registerLocaleData } from '@angular/common';
 // import localeEsAr from '@angular/common/locales/es-AR';
 //
@@ -59,7 +60,7 @@ import { TurnosCustomModule } from './turnos-custom/turnos-custom.module';
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent
+        FooterComponent,
     ],
     providers: [
         ProfileService,
