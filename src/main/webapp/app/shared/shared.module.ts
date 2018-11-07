@@ -15,6 +15,7 @@ import {
     Principal,
     HasAnyAuthorityDirective,
 } from './';
+import { RedirectComponentService } from './redirect/redirectComponentService';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import {
         CSRFService,
         AuthServerProvider,
         UserService,
-        DatePipe
+        DatePipe,
+        RedirectComponentService
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [

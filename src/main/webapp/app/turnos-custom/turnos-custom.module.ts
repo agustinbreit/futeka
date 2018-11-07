@@ -15,6 +15,7 @@ const ENTITY_STATES = [
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BlockUICustomComponentModule } from '../utils/blockUI';
 
 registerLocaleData(localeEsAr);
 
@@ -26,6 +27,7 @@ export function getLang() {
    imports: [
         FutekaSharedModule,
         MaterialModule,
+        BlockUICustomComponentModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [

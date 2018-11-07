@@ -1,0 +1,9 @@
+<div class="flex-container-center" *ngIf="blocked">
+    <div class="flex-container" *ngIf="blocked">
+        <p-progressSpinner></p-progressSpinner>
+
+        <p-blockUI [blocked]="blocked">
+
+        </p-blockUI>
+    </div>
+</div>

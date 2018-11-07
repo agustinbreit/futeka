@@ -33,5 +33,17 @@ export const turnosRoute: Routes = [
             pageTitle: 'futekaApp.turno.home.title'
         },
         canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'turnos/:fecha',
+        component: TurnosCustomComponent,
+        resolve: {
+            'pagingParams': TurnosCustomResolvePagingParams
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'futekaApp.turno.home.title'
+        },
+        canActivate: [UserRouteAccessService]
     }
 ];

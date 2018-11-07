@@ -1,10 +1,11 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Cancha, CanchaService } from '../../entities/cancha';
 import { HttpResponse } from '@angular/common/http';
 import { EstadoTurnoEnum, Turno, TurnoService } from '../../entities/turno';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { NgForm} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 export interface DialogData {
     turno: Turno;
@@ -16,24 +17,41 @@ export interface DialogData {
   templateUrl: './turnos-custom.component.html',
   styleUrls: [ './turnos-custom.component.css']
 })
-export class TurnosCustomComponent implements OnInit {
+export class TurnosCustomComponent implements OnInit, OnDestroy {
     canchas: Cancha[];
     now: any;
     @ViewChild('editForm') editForm: NgForm;
+    routeSub: any;
+    fechaTurno: any;
+    blocked = false;
     //nombre = new FormControl('', [Validators.required, Validators.minLength(3)]);
     constructor(private canchaService: CanchaService,
                 private turnosService: TurnoService,
                 public dialog: MatDialog,
                 private turnoService: TurnoService,
                 private datePipe: DatePipe,
-                public snackBar: MatSnackBar
+                public snackBar: MatSnackBar,
+                private route: ActivatedRoute,
                ) { }
 
     ngOnInit() {
-        this.findCanchasAndTurnos(new Date());
+        this.routeSub = this.route.params.subscribe((params) => {
+            if (params['fecha']) {
+                this.fechaTurno = new Date(params['fecha']);
+            } else {
+                this.fechaTurno = new Date();
+            }
+            this.findCanchasAndTurnos(this.fechaTurno);
+        });
+
+    }
+
+    ngOnDestroy() {
+        this.routeSub.unsubscribe();
     }
 
     findCanchasAndTurnos(date?: Date) {
+        this.blocked = true;
         const now = date;
         now.setHours(13);
         now.setMinutes(0);
@@ -52,9 +70,10 @@ export class TurnosCustomComponent implements OnInit {
                         this.turnosService.findTurnosByCancha(turno)
                             .subscribe((res: HttpResponse<Turno[]>) => {
                                 cancha.turnos = res.body;
-                            });
+                                this.blocked = false;
+                            }, () => this.blocked = false);
                     }
-                },
+                }, () => this.blocked = false
             );
     }
     darDeBajaDialog(turno) {
@@ -82,24 +101,24 @@ export class TurnosCustomComponent implements OnInit {
     guardarTurno(turno) {
         turno.fechaTurno = this.datePipe
             .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
-
+        this.blocked = true;
         this.turnoService.find(turno.id)
             .subscribe((turnoResponse: HttpResponse<Turno>) => {
                 const _turno: Turno = turnoResponse.body;
                 _turno.fechaTurno = this.datePipe
                     .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
-               console.log(turno);
                if (_turno.estado == 'RESERVADO') {
                    this.snackBar.openFromComponent( SnackBarErrorComponent, {duration: 500});
                }else {
                    turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO];
                    this.turnoService.update(turno).
                    subscribe((res: HttpResponse<Turno>) => {
+                       this.blocked = false;
                        turno = res.body;
                        this.snackBar.open( 'Turno Reservado Correctamente', null, {duration: 500});
-                   });
+                   }, () => this.blocked = false);
                }
-        });
+        }, () => this.blocked = false);
     }
     getColor(turno) {
         if (!turno) return 'black';

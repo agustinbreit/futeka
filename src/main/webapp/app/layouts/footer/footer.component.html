@@ -1,13 +1,19 @@
 <div class="footer">
     <mat-toolbar color="primary">
         <mat-toolbar-row>
-            <mat-form-field class="example-full-width">
-                <input matInput [matDatepicker]="picker">
+            <mat-form-field class="example-full-width"  style="width:1px;visibility:hidden;">
+                <input matInput [matDatepicker]="picker" (dateChange)="cambiarFecha($event)">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker touchUi #picker></mat-datepicker>
             </mat-form-field>
+
+            <button mat-icon-button (click)="picker.open()">
+                <mat-icon>date_range</mat-icon>
+            </button>
             <span style="flex: 1 1 auto;"></span>
-            <mat-icon style="padding: 0 14px;">delete</mat-icon>
+            <button mat-icon-button>
+                <mat-icon>timeline</mat-icon>
+            </button>
         </mat-toolbar-row>
     </mat-toolbar>
 </div>
