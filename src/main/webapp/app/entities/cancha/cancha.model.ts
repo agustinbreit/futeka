@@ -14,6 +14,8 @@ export class Cancha implements BaseEntity {
         public tipo?: TipoCanchaEnum,
         public precio?: number,
         public turnos?: Turno[],
+        public turnosLibres?: number,
+        public turnosOcupados?: number
     ) {
     }
 }

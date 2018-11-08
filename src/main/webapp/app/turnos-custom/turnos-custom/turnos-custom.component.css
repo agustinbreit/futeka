@@ -24,3 +24,9 @@
     width: 100%;
     text-align: center;
 }
+.btn-outline-primary {
+    color: #3E8ACC;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ffffff00 !important;
+}

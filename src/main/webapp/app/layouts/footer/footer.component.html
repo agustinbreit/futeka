@@ -1,5 +1,5 @@
-<div class="footer">
-    <mat-toolbar color="primary">
+<div class="footer" *ngIf="isAuthenticated()">
+    <mat-toolbar color="primary" style="background-color: #7a9235">
         <mat-toolbar-row>
             <mat-form-field class="example-full-width"  style="width:1px;visibility:hidden;">
                 <input matInput [matDatepicker]="picker" (dateChange)="cambiarFecha($event)">

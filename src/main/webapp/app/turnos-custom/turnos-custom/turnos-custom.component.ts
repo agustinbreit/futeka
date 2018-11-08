@@ -70,6 +70,17 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
                         this.turnosService.findTurnosByCancha(turno)
                             .subscribe((res: HttpResponse<Turno[]>) => {
                                 cancha.turnos = res.body;
+                                let libres = 0;
+                                let turnosOcupados = 0;
+                                for (const turno of cancha.turnos) {
+                                    if (turno.estado == EstadoTurnoEnum.CANCELADO.toString() || turno.estado == EstadoTurnoEnum.LIBRE.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.CANCELADO] || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.LIBRE]) {
+                                        libres++;
+                                    }else if (turno.estado == EstadoTurnoEnum.RESERVADO.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO]){
+                                        turnosOcupados++;
+                                    }
+                                }
+                                cancha.turnosLibres = libres;
+                                cancha.turnosOcupados = turnosOcupados;
                                 this.blocked = false;
                             }, () => this.blocked = false);
                     }

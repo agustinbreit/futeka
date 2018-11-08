@@ -2,20 +2,25 @@
 
     <mat-card>
         <mat-card-header class="card-header-center-text">
-            <mat-card-title><h3><span jhiTranslate="futekaApp.turno.home.title">Turnos</span>: {{ fechaTurno | date: 'dd/MM/yyyy'}}</h3></mat-card-title>
+            <mat-card-title><h3><span jhiTranslate="futekaApp.turno.home.title">Turnos</span>: {{ fechaTurno | date: 'dd-MM-yyyy'}}</h3></mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-accordion>
+            <mat-accordion *ngIf="canchas && canchas.length > 0">
                 <mat-expansion-panel *ngFor="let cancha of canchas">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <!--<strong><h3>{{cancha.tipo}}</h3></strong>-->
                         </mat-panel-title>
                         <mat-panel-description>
-                            <strong>{{cancha.nombre+'  '}}({{cancha.tipo}})</strong>
+
+                            <button type="button" class="btn btn-outline-primary">
+                                {{cancha.nombre+'  '}}({{cancha.tipo+'  '}}) <span class="badge badge-success">{{cancha.turnosLibres}}</span><span class="badge badge-danger" style="margin-left: 5px">{{cancha.turnosOcupados}}</span>
+                            </button>
+
+                            <!--<span><strong>{{cancha.nombre+'  '}}({{cancha.tipo+'  '}})</strong></span><span class="badge badge-secondary">{{cancha.turnosLibres}}</span>-->
                         </mat-panel-description>
                     </mat-expansion-panel-header>
-                    <mat-accordion>
+                    <mat-accordion *ngIf="cancha.turnos && cancha.turnos.length > 0">
                         <mat-expansion-panel *ngFor="let turno of cancha.turnos">
                             <mat-expansion-panel-header>
                                 <mat-panel-title>

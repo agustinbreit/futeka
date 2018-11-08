@@ -40,7 +40,7 @@ import {
         MatExpansionModule,
         MatFormFieldModule,
         MatDialogModule,
-        MatDatepickerModule
+        MatDatepickerModule,
     ],
     exports: [
         MatAutocompleteModule,
