@@ -105,7 +105,64 @@ public class TurnoServiceImpl implements TurnoService {
                 .select(qTurno).distinct()
                 .where(booleanBuilder).fetchFirst();
             if(_turno!=null){
-                turnosToReturn.add(_turno);
+                if(_turno.getEstado().equals(EstadoTurnoEnum.RESERVADO)) {
+                    if(_turno.getFechaTurno().isBefore(startTime)) {
+                        _turno.setEstado(EstadoTurnoEnum.ASISTIDO);
+                        _turno = turnoRepository.save(_turno);
+                    }
+
+                    Turno turnoToday = queryFactory.from(qTurno)
+                        .select(qTurno).distinct()
+                        .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
+                    if(turnoToday!=null){
+                        if(turnoToday.getFechaTurno().isBefore(ZonedDateTime.now())){
+                            turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
+                            turnoToday = turnoRepository.save(turnoToday);
+                        }
+                        turnosToReturn.add(turnoToday);
+                    }else {
+                        Turno newTurno = new Turno();
+                        newTurno.setFechaTurno(startTime);
+                        newTurno.setEstado(EstadoTurnoEnum.RESERVADO);
+                        newTurno.setTelefono(_turno.getTelefono());
+                        newTurno.setNombre(_turno.getNombre());
+                        newTurno.setTurnoFijo(_turno.isTurnoFijo());
+                        newTurno.setDiaDeSemana(_turno.getDiaDeSemana());
+                        newTurno.setCancha(_turno.getCancha());
+                        newTurno = turnoRepository.save(newTurno);
+                        turnosToReturn.add(newTurno);
+                    }
+
+                }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO) && _turno.getFechaTurno().isBefore(startTime)) {
+                    Turno turnoToday = queryFactory.from(qTurno)
+                        .select(qTurno).distinct()
+                        .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
+                    if(turnoToday!=null){
+                        turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
+                        turnoToday = turnoRepository.save(turnoToday);
+                        turnosToReturn.add(turnoToday);
+                    }else {
+                        Turno newTurno = new Turno();
+                        newTurno.setFechaTurno(startTime);
+                        if(startTime.isBefore(ZonedDateTime.now())) {
+                            newTurno.setEstado(EstadoTurnoEnum.ASISTIDO);
+                        }else {
+                            newTurno.setEstado(EstadoTurnoEnum.RESERVADO);
+                        }
+
+                        newTurno.setTelefono(_turno.getTelefono());
+                        newTurno.setNombre(_turno.getNombre());
+                        newTurno.setTurnoFijo(_turno.isTurnoFijo());
+                        newTurno.setDiaDeSemana(_turno.getDiaDeSemana());
+                        newTurno.setCancha(_turno.getCancha());
+                        newTurno = turnoRepository.save(newTurno);
+                        turnosToReturn.add(newTurno);
+                    }
+
+                }else {
+                    turnosToReturn.add(_turno);
+                }
+                startTime = startTime.plusHours(1);
             }else {
                 Turno turnoToAdd = new Turno();
                 turnoToAdd.setCancha(turno.getCancha());
@@ -113,8 +170,9 @@ public class TurnoServiceImpl implements TurnoService {
                 turnoToAdd.setDiaDeSemana(turno.getDiaDeSemana());
                 turnoToAdd.setFechaTurno(startTime.withZoneSameLocal(zone));
                 turnosToReturn.add(turnoToAdd);
+                startTime = startTime.plusHours(1);
             }
-            startTime = startTime.plusHours(1);
+
         }while (startTime.isBefore(endTime));
 
         Page<Turno> turnoPage =  new PageImpl<>(turnosToReturn,pageable,turnosToReturn.size());

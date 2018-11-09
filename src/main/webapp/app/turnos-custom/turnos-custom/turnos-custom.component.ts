@@ -24,6 +24,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
     routeSub: any;
     fechaTurno: any;
     blocked = false;
+    valorEnCaja = 0;
     //nombre = new FormControl('', [Validators.required, Validators.minLength(3)]);
     constructor(private canchaService: CanchaService,
                 private turnosService: TurnoService,
@@ -57,7 +58,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
         now.setMinutes(0);
         now.setSeconds(0);
         now.setMilliseconds(0);
-
+        this.valorEnCaja = 0;
         this.canchaService.query()
             .subscribe((res: HttpResponse<Cancha[]>) => {
                     this.canchas = res.body;
@@ -72,15 +73,19 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
                                 cancha.turnos = res.body;
                                 let libres = 0;
                                 let turnosOcupados = 0;
+                                let turnosAsistidos = 0;
                                 for (const turno of cancha.turnos) {
                                     if (turno.estado == EstadoTurnoEnum.CANCELADO.toString() || turno.estado == EstadoTurnoEnum.LIBRE.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.CANCELADO] || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.LIBRE]) {
                                         libres++;
-                                    }else if (turno.estado == EstadoTurnoEnum.RESERVADO.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO]){
+                                    }else if (turno.estado == EstadoTurnoEnum.RESERVADO.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO]) {
                                         turnosOcupados++;
+                                    }else if (turno.estado == EstadoTurnoEnum.ASISTIDO.toString() || turno.estado == EstadoTurnoEnum[EstadoTurnoEnum.ASISTIDO]) {
+                                        turnosAsistidos++;
                                     }
                                 }
                                 cancha.turnosLibres = libres;
                                 cancha.turnosOcupados = turnosOcupados;
+                                this.valorEnCaja = this.valorEnCaja + (cancha.precio * turnosAsistidos);
                                 this.blocked = false;
                             }, () => this.blocked = false);
                     }
