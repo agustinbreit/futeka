@@ -1,0 +1,27 @@
+<div style="height: 80%">
+    <mat-card style="height: -webkit-fill-available;">
+        <mat-card-content>
+            <section class="example-section">
+                <mat-checkbox class="example-margin" [(ngModel)]="isSingleDateSeach">Estadisticas por Dia</mat-checkbox>
+            </section>
+
+            <section class="example-section">
+                <p-calendar *ngIf="isSingleDateSeach" dateFormat="dd/mm/yy" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="fechaBusqueda"></p-calendar>
+                <p-calendar *ngIf="!isSingleDateSeach" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="fechaBusqueda"></p-calendar>
+            </section>
+        </mat-card-content>
+    </mat-card>
+    <div >
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <button mat-button (click)="onNoClick()">
+                    Cancelar
+                </button>
+                <span style="flex: 1 1 auto;"></span>
+                <button mat-button (click)="abrirEstadisticas()">
+                    Buscar
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+</div>

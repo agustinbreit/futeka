@@ -32,6 +32,8 @@ import { MaterialModule } from './material-module';
 import { TurnosCustomModule } from './turnos-custom/turnos-custom.module';
 import { MatInputModule } from '@angular/material';
 import { BlockUICustomComponentModule } from './utils/blockUI/block-ui.module';
+import { EstadisticasComponent } from './estadisticas/estadisticas/estadisticas.component';
+import { EstadisticasModule } from './estadisticas/estadisticas/estadisticas.module';
 // import { registerLocaleData } from '@angular/common';
 // import localeEsAr from '@angular/common/locales/es-AR';
 //
@@ -52,7 +54,8 @@ import { BlockUICustomComponentModule } from './utils/blockUI/block-ui.module';
         FutekaEntityModule,
         MaterialModule,
         BrowserAnimationsModule,
-        TurnosCustomModule
+        TurnosCustomModule,
+        EstadisticasModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

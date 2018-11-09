@@ -133,14 +133,18 @@ public class TurnoServiceImpl implements TurnoService {
                         turnosToReturn.add(newTurno);
                     }
 
-                }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO) && _turno.getFechaTurno().isBefore(startTime)) {
+                }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO)) {
                     Turno turnoToday = queryFactory.from(qTurno)
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
                     if(turnoToday!=null){
-                        turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
-                        turnoToday = turnoRepository.save(turnoToday);
-                        turnosToReturn.add(turnoToday);
+                        if(turnoToday.getFechaTurno().isBefore(ZonedDateTime.now())) {
+                            turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
+                            turnoToday = turnoRepository.save(turnoToday);
+                            turnosToReturn.add(turnoToday);
+                        } else {
+                            turnosToReturn.add(turnoToday);
+                        }
                     }else {
                         Turno newTurno = new Turno();
                         newTurno.setFechaTurno(startTime);

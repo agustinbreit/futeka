@@ -82,7 +82,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
                 this.stateStorageService.storeUrl(null);
                 this.router.navigate([redirect]);
             } else {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/turnos']);
             }
         }).catch(() => {
             this.authenticationError = true;
