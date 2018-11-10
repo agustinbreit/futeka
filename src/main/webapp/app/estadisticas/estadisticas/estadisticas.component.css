@@ -1,0 +1,35 @@
+.example-card {
+    max-width: 400px;
+}
+
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+.material-icons {
+    vertical-align: middle !important;
+    padding-bottom: 3px;
+}
+
+.example-full-width {
+    width: 80%;
+}
+.ng-invalid:not(form) {
+    border-left: 0px !important;
+}
+.ng-valid[required], .ng-valid.required {
+    border-left: 0px !important;
+}
+:host >>> .card-header-center-text > div {
+    width: 100%;
+    text-align: center;
+}
+.btn-outline-primary {
+    color: #3E8ACC;
+    background-color: transparent;
+    background-image: none;
+    border-color: #ffffff00 !important;
+}
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+    box-shadow: none !important;
+}

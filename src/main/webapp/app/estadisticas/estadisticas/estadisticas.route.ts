@@ -30,7 +30,7 @@ export const estadisticasRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'futekaApp.turno.home.title'
+            pageTitle: 'futekaApp.turno.home.estadisticas'
         },
         pathMatch: 'full',
         canActivate: [UserRouteAccessService]

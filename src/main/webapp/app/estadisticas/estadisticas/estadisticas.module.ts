@@ -6,6 +6,8 @@ import { CalendarModule, CheckboxModule } from 'primeng/primeng';
 import { turnosRoute } from '../../turnos-custom/turnos-custom/turnos.custom.route';
 import { EstadisticasCustomResolvePagingParams, estadisticasRoute } from './estadisticas.route';
 import { RouterModule } from '@angular/router';
+import { BlockUICustomComponentModule } from '../../utils/blockUI';
+import { ChartModule } from 'primeng/chart';
 const ENTITY_STATES = [
     ...estadisticasRoute,
 ];
@@ -15,6 +17,8 @@ const ENTITY_STATES = [
       MaterialModule,
       CalendarModule,
       CheckboxModule,
+      BlockUICustomComponentModule,
+      ChartModule,
       RouterModule.forChild(ENTITY_STATES)
   ],
     providers: [EstadisticasCustomResolvePagingParams],

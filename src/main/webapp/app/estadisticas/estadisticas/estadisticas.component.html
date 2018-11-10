@@ -1,3 +1,42 @@
-<p>
-  estadisticas works!
-</p>
+<div>
+
+    <mat-card>
+        <mat-card-header class="card-header-center-text">
+            <mat-card-title><h4><span>Estadisticas {{isSingleDate? (fechaTurno | date: 'dd MMMM'): 'de '+ (fechaTurno | date: 'MMMM')}}</span></h4></mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-accordion *ngIf="estadisticas">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-description>
+                            <button type="button" class="btn btn-outline-primary">
+                                Reservas Totales ({{estadisticas.reservasTotales}}) <span class="badge badge-success">{{estadisticas.turnosAsistidos}}</span><span class="badge badge-danger" style="margin-left: 5px">{{estadisticas.turnosNoAsistidos}}</span>
+                            </button>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin-bottom: 15px" *ngIf="data">
+                        <p-chart type="bar" [data]="data" [height]="300"></p-chart>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion *ngIf="estadisticas">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-description>
+                            <button type="button" class="btn btn-outline-primary">
+                                Total: <span class="badge badge-success">{{estadisticas.gananciaTotal | currency:'$':true}}</span> <span class="badge badge-danger" style="margin-left: 5px">{{estadisticas.perdidaTotal | currency:'$':true}}</span>
+                            </button>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin-bottom: 15px" *ngIf="dataPrecio">
+                        <p-chart type="bar" [data]="dataPrecio" [height]="300"></p-chart>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card-content>
+
+    </mat-card>
+</div>
+
+<jhi-block-ui-custom [blocked]="blocked"></jhi-block-ui-custom>

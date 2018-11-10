@@ -3,6 +3,7 @@ package com.futeka.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.futeka.domain.Turno;
 import com.futeka.service.TurnoService;
+import com.futeka.service.dto.EstadisticasDTO;
 import com.futeka.web.rest.errors.BadRequestAlertException;
 import com.futeka.web.rest.util.HeaderUtil;
 import com.futeka.web.rest.util.PaginationUtil;
@@ -151,6 +152,20 @@ public class TurnoResource {
     @Timed
     public ResponseEntity<Turno> getTurno(@RequestBody Turno turno) {
         Turno _turno = turnoService.findOneByDate(turno);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(turno));
+    }
+
+
+    /**
+     * GET  /turnos/:id : get the "id" turno.
+     *
+     * @param estadisticasDTO the id of the turno to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the turno, or with status 404 (Not Found)
+     */
+    @PostMapping("/turnos/findEstadisticasByDates")
+    @Timed
+    public ResponseEntity<EstadisticasDTO> findEstadisticasByDates(@RequestBody EstadisticasDTO estadisticasDTO) {
+        EstadisticasDTO turno = turnoService.getEstadisticasByDates(estadisticasDTO);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(turno));
     }
 }

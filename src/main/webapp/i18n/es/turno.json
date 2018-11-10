@@ -5,7 +5,8 @@
             "home": {
                 "title": "Turnos",
                 "createLabel": "Crear nuevo Turno",
-                "createOrEditLabel": "Crear o editar Turno"
+                "createOrEditLabel": "Crear o editar Turno",
+                "estadisticas": "Estadisticas"
             },
             "created": "Un nuevo Turno ha sido creado con el identificador {{ param }}",
             "updated": "Un Turno ha sido actualizado con el identificador {{ param }}",

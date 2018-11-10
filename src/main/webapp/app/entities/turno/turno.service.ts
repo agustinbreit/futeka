@@ -7,8 +7,10 @@ import { JhiDateUtils } from 'ng-jhipster';
 
 import { Turno } from './turno.model';
 import { createRequestOption } from '../../shared';
+import { EstadisticasDTO } from '../../estadisticas/estadisticas/estadisticas.model';
 
 export type EntityResponseType = HttpResponse<Turno>;
+export type EntityResponseTypeEstadistica = HttpResponse<EstadisticasDTO>;
 
 @Injectable()
 export class TurnoService {
@@ -38,6 +40,17 @@ export class TurnoService {
         const copy = this.convert(turno);
         return this.http.post<Turno>(`${this.resourceUrl}/findByDate/`, copy, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    findEstadisticasByDates(estadisticas: EstadisticasDTO): Observable<EntityResponseTypeEstadistica> {
+        return this.http.post<EstadisticasDTO>(`${this.resourceUrl}/findEstadisticasByDates/`, estadisticas, { observe: 'response'})
+            .map((res: EntityResponseTypeEstadistica) => {
+                const copy: EstadisticasDTO = Object.assign({}, res.body);
+                copy.fechaInicio = this.dateUtils.convertDateTimeFromServer(copy.fechaInicio);
+                copy.fechaFin = this.dateUtils.convertDateTimeFromServer(copy.fechaFin);
+                const body: EstadisticasDTO = copy;
+                return res.clone({body});
+            });
     }
 
     query(req?: any): Observable<HttpResponse<Turno[]>> {

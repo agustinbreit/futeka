@@ -5,6 +5,7 @@ import com.futeka.domain.enumeration.EstadoTurnoEnum;
 import com.futeka.service.TurnoService;
 import com.futeka.domain.Turno;
 import com.futeka.repository.TurnoRepository;
+import com.futeka.service.dto.EstadisticasDTO;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -195,5 +197,42 @@ public class TurnoServiceImpl implements TurnoService {
         return _turno;
     }
 
+    @Override
+    public EstadisticasDTO getEstadisticasByDates(EstadisticasDTO estadisticasDTO) {
+        ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
+        ZonedDateTime startTime = estadisticasDTO.getFechaInicio().withZoneSameLocal(zone);
+        ZonedDateTime endTime = estadisticasDTO.getFechaFin().withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        QTurno qTurno = QTurno.turno;
+        BooleanBuilder booleanBuilder = null;
+        if(estadisticasDTO.getCancha()!=null) {
+            booleanBuilder = new BooleanBuilder(qTurno.fechaTurno.between(startTime,endTime).and(qTurno.cancha().id.eq(estadisticasDTO.getCancha().getId())));
+        }else {
+            booleanBuilder = new BooleanBuilder(qTurno.fechaTurno.between(startTime,endTime));
+        }
 
+        Long turnosAsistidos = queryFactory.from(qTurno)
+            .select(qTurno.count())
+            .where(new BooleanBuilder(booleanBuilder).and(qTurno.estado.in(EstadoTurnoEnum.ASISTIDO, EstadoTurnoEnum.RESERVADO))).fetchOne();
+
+        Long turnosCancelados = queryFactory.from(qTurno)
+            .select(qTurno.count())
+            .where(new BooleanBuilder(booleanBuilder).and(qTurno.estado.in(EstadoTurnoEnum.CANCELADO))).fetchOne();
+
+        BigDecimal gananciaTotal = queryFactory.from(qTurno)
+            .select(qTurno.cancha().precio.sum())
+            .where(new BooleanBuilder(booleanBuilder).and(qTurno.estado.in(EstadoTurnoEnum.ASISTIDO, EstadoTurnoEnum.RESERVADO))).fetchOne();
+
+        BigDecimal perdidaTotal = queryFactory.from(qTurno)
+            .select(qTurno.cancha().precio.sum())
+            .where(new BooleanBuilder(booleanBuilder).and(qTurno.estado.in(EstadoTurnoEnum.CANCELADO))).fetchOne();
+
+        estadisticasDTO.setGananciaTotal(gananciaTotal!=null? gananciaTotal: BigDecimal.ZERO);
+        estadisticasDTO.setPerdidaTotal(perdidaTotal!=null? perdidaTotal: BigDecimal.ZERO);
+        estadisticasDTO.setReservasTotales(turnosAsistidos+turnosCancelados);
+        estadisticasDTO.setTurnosAsistidos(turnosAsistidos);
+        estadisticasDTO.setTurnosNoAsistidos(turnosCancelados);
+
+        return estadisticasDTO;
+    }
 }

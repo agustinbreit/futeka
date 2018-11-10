@@ -1,6 +1,7 @@
 package com.futeka.service;
 
 import com.futeka.domain.Turno;
+import com.futeka.service.dto.EstadisticasDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -45,4 +46,6 @@ public interface TurnoService {
     Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable);
 
     Turno findOneByDate(Turno turno);
+
+    EstadisticasDTO getEstadisticasByDates(EstadisticasDTO estadisticasDTO);
 }
