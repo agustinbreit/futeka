@@ -34,6 +34,12 @@ export class TurnoService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    findByDate(turno: Turno): Observable<EntityResponseType> {
+        const copy = this.convert(turno);
+        return this.http.post<Turno>(`${this.resourceUrl}/findByDate/`, copy, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
     query(req?: any): Observable<HttpResponse<Turno[]>> {
         const options = createRequestOption(req);
         return this.http.get<Turno[]>(this.resourceUrl, { params: options, observe: 'response' })

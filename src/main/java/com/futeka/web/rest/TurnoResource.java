@@ -140,4 +140,17 @@ public class TurnoResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/turnos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    /**
+     * GET  /turnos/:id : get the "id" turno.
+     *
+     * @param turno the id of the turno to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the turno, or with status 404 (Not Found)
+     */
+    @PostMapping("/turnos/findByDate")
+    @Timed
+    public ResponseEntity<Turno> getTurno(@RequestBody Turno turno) {
+        Turno _turno = turnoService.findOneByDate(turno);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(turno));
+    }
 }

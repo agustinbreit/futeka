@@ -4,6 +4,8 @@ import com.futeka.domain.Turno;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.ZonedDateTime;
+
 /**
  * Service Interface for managing Turno.
  */
@@ -41,4 +43,6 @@ public interface TurnoService {
     void delete(Long id);
 
     Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable);
+
+    Turno findOneByDate(Turno turno);
 }

@@ -183,4 +183,17 @@ public class TurnoServiceImpl implements TurnoService {
 
         return turnoPage;
     }
+
+    @Override
+    public Turno findOneByDate(Turno turno) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        QTurno qTurno = QTurno.turno;
+        BooleanBuilder booleanBuilder = new BooleanBuilder(qTurno.cancha().id.eq(turno.getCancha().getId()).and(qTurno.fechaTurno.eq(turno.getFechaTurno())));
+        Turno _turno = queryFactory.from(qTurno)
+            .select(qTurno).distinct()
+            .where(booleanBuilder).fetchFirst();
+        return _turno;
+    }
+
+
 }

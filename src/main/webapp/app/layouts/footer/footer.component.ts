@@ -11,7 +11,8 @@ import { EstadisticasDialogPopUpComponent } from '../../estadisticas/estadistica
 
 @Component({
     selector: 'jhi-footer',
-    templateUrl: './footer.component.html'
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
     constructor(private router: Router, private principal: Principal, public dialog: MatDialog) {}
@@ -27,12 +28,14 @@ export class FooterComponent {
     abrirEstadisticas() {
         // const accion = { accion: 'baja', turno': turno}
         const dialogRef = this.dialog.open(EstadisticasDialogPopUpComponent, {
-            width: '320px',
-            height: '450px',
+            width: '90%',
+            height: '80%',
             data: {accion: 'baja', 'turno': null}
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(result);
+            // setTimeout(() => {
+            //     this.router.navigate(['/estadisticas', result.isSingleDateSeach, result.fechaBusqueda.toDateString()]);
+            // }, 5);
         });
     }
 }

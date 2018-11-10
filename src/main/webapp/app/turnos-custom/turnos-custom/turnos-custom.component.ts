@@ -99,6 +99,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
             data: {accion: 'baja', 'turno': turno}
         });
         dialogRef.afterClosed().subscribe((result) => {
+            this.setTurnosEnCancha(true, turno);
             turno = result;
             this.snackBar.open( 'Turno dado de Baja', null, {duration: 500});
         });
@@ -110,6 +111,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe((result) => {
             turno = result;
+            this.setTurnosEnCancha(false, turno);
             this.snackBar.open( 'Turno Cancelado', null, {duration: 500});
         });
     }
@@ -118,23 +120,45 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
         turno.fechaTurno = this.datePipe
             .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
         this.blocked = true;
-        this.turnoService.find(turno.id)
-            .subscribe((turnoResponse: HttpResponse<Turno>) => {
-                const _turno: Turno = turnoResponse.body;
-                _turno.fechaTurno = this.datePipe
-                    .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
-               if (_turno.estado == 'RESERVADO') {
-                   this.snackBar.openFromComponent( SnackBarErrorComponent, {duration: 500});
-               }else {
-                   turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO];
-                   this.turnoService.update(turno).
-                   subscribe((res: HttpResponse<Turno>) => {
-                       this.blocked = false;
-                       turno = res.body;
-                       this.snackBar.open( 'Turno Reservado Correctamente', null, {duration: 500});
-                   }, () => this.blocked = false);
-               }
-        }, () => this.blocked = false);
+        if (turno.id) {
+            this.turnoService.find(turno.id)
+                .subscribe((turnoResponse: HttpResponse<Turno>) => {
+                    const _turno: Turno = turnoResponse.body;
+                    _turno.fechaTurno = this.datePipe
+                        .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
+                    if (_turno.estado == 'RESERVADO') {
+                        this.snackBar.openFromComponent( SnackBarErrorComponent, {duration: 500});
+                    }else {
+                        turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO];
+                        this.turnoService.update(turno).
+                        subscribe((res: HttpResponse<Turno>) => {
+                            this.blocked = false;
+                            this.setTurnosEnCancha(true, turno);
+                            turno = res.body;
+                            this.snackBar.open( 'Turno Reservado Correctamente', null, {duration: 500});
+                        }, () => this.blocked = false);
+                    }
+                }, () => this.blocked = false);
+        }else {
+            this.turnoService.findByDate(turno)
+                .subscribe((turnoResponse: HttpResponse<Turno>) => {
+                    const _turno: Turno = turnoResponse.body;
+                    _turno.fechaTurno = this.datePipe
+                        .transform(turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
+                    if (_turno.estado == 'RESERVADO') {
+                        this.snackBar.openFromComponent( SnackBarErrorComponent, {duration: 500});
+                    }else {
+                        turno.estado = EstadoTurnoEnum[EstadoTurnoEnum.RESERVADO];
+                        this.turnoService.update(turno).
+                        subscribe((res: HttpResponse<Turno>) => {
+                            this.blocked = false;
+                            turno = res.body;
+                            this.setTurnosEnCancha(true, turno);
+                            this.snackBar.open( 'Turno Reservado Correctamente', null, {duration: 500});
+                        }, () => this.blocked = false);
+                    }
+                }, () => this.blocked = false);
+        }
     }
     getColor(turno) {
         if (!turno) return 'black';
@@ -147,6 +171,20 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
             default: color = 'blue';
         }
         return color;
+    }
+
+    setTurnosEnCancha(esReserba: boolean, turno: Turno) {
+        for (const cancha of this.canchas) {
+            if (cancha.id == turno.cancha.id) {
+               if (esReserba) {
+                   cancha.turnosLibres --;
+                   cancha.turnosOcupados ++;
+               } else {
+                   cancha.turnosLibres ++;
+                   cancha.turnosOcupados --;
+               }
+            }
+        }
     }
 
 }
