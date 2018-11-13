@@ -101,8 +101,22 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             debug: false
         }),
         new WorkboxPlugin.GenerateSW({
-          clientsClaim: true,
-          skipWaiting: true,
+            swDest: 'sw.js',
+            clientsClaim: true,
+            skipWaiting: true,
+            runtimeCaching: [{
+                urlPattern: new RegExp('^https://code\.jquery\.com/'),
+                handler: 'staleWhileRevalidate'
+            },{
+                urlPattern: new RegExp('^https://cdnjs\.cloudflare\.com/'),
+                handler: 'staleWhileRevalidate'
+            },{
+                urlPattern: new RegExp('^https://cdn\.quilljs\.com/'),
+                handler: 'staleWhileRevalidate'
+            },{
+                urlPattern: new RegExp('^https://fonts\.googleapis\.com/'),
+                handler: 'staleWhileRevalidate'
+            }]
         })
     ]
 });

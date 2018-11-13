@@ -11,4 +11,7 @@ export class PasswordResetInitService {
     save(mail: string): Observable<any> {
         return this.http.post(SERVER_API_URL + 'api/account/reset-password/init', mail);
     }
+    getResetPasswordLink(mail: string): Observable<any> {
+        return this.http.post(SERVER_API_URL + 'api/account/reset-password-from-admin/init', mail);
+    }
 }

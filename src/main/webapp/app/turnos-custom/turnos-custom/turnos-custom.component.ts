@@ -25,6 +25,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
     fechaTurno: any;
     blocked = false;
     valorEnCaja = 0;
+    nowForComparsion = new Date();
     //nombre = new FormControl('', [Validators.required, Validators.minLength(3)]);
     constructor(private canchaService: CanchaService,
                 private turnosService: TurnoService,
@@ -42,6 +43,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
             } else {
                 this.fechaTurno = new Date();
             }
+            this.nowForComparsion = new Date();
             this.findCanchasAndTurnos(this.fechaTurno);
         });
 

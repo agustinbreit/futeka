@@ -135,7 +135,7 @@ public class TurnoServiceImpl implements TurnoService {
                         turnosToReturn.add(newTurno);
                     }
 
-                }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO)) {
+                }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO) || _turno.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
                     Turno turnoToday = queryFactory.from(qTurno)
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
@@ -145,6 +145,10 @@ public class TurnoServiceImpl implements TurnoService {
                             turnoToday = turnoRepository.save(turnoToday);
                             turnosToReturn.add(turnoToday);
                         } else {
+                            if(!turnoToday.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
+                                turnoToday.setEstado(EstadoTurnoEnum.RESERVADO);
+                                turnoToday = turnoRepository.save(turnoToday);
+                            }
                             turnosToReturn.add(turnoToday);
                         }
                     }else {
@@ -169,7 +173,7 @@ public class TurnoServiceImpl implements TurnoService {
                     turnosToReturn.add(_turno);
                 }
                 startTime = startTime.plusHours(1);
-            }else {
+            }else{
                 Turno turnoToAdd = new Turno();
                 turnoToAdd.setCancha(turno.getCancha());
                 turnoToAdd.setEstado(EstadoTurnoEnum.LIBRE);

@@ -48,12 +48,13 @@
                                     </mat-slide-toggle>
                                 </mat-card-content>
                                 <mat-card-actions align="end">
-                                    <button mat-raised-button color="warn" style="flex: 1 1 auto;font-size: smaller;" (click)="darDeBajaDialog(turno)" *ngIf="turno.turnoFijo">Dar De Baja</button>
-                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;font-size: smaller;" (click)="cancelarDialog(turno)">Cancelar Turno</button>
+                                    <button mat-raised-button color="warn" style="flex: 1 1 auto;font-size: smaller;" (click)="darDeBajaDialog(turno)" *ngIf="turno.turnoFijo" >Dar De Baja</button>
+                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;font-size: smaller;" (click)="cancelarDialog(turno)" [disabled]="(turno.fechaTurno < nowForComparsion)">Cancelar Turno</button>
                                 </mat-card-actions>
                             </mat-card>
 
                             <mat-card *ngIf="turno.estado != 'RESERVADO' && turno.estado !='ASISTIDO'">
+
                                 <mat-card-header>
                                     <mat-card-title >
                                         <mat-form-field class="example-full-width">
@@ -74,13 +75,31 @@
                                     </mat-slide-toggle>
                                 </mat-card-content>
                                 <mat-card-actions align="end">
-                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;" (click)="guardarTurno(turno)" [disabled]="!turno.nombre || !turno.telefono">Reservar Turno</button>
+                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;" (click)="guardarTurno(turno)" [disabled]="!turno.nombre || !turno.telefono || (turno.fechaTurno < nowForComparsion)">Reservar Turno</button>
                                 </mat-card-actions>
                             </mat-card>
 
-
-
-
+                            <mat-card *ngIf="turno.estado =='ASISTIDO'">
+                                <mat-card-header>
+                                    <mat-card-title >
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput placeholder="Nombre" [disabled]="true" [(ngModel)]="turno.nombre" id="turno_nombre_asistido">
+                                            <mat-error *ngIf="!turno.nombre">El nombre es requerido</mat-error>
+                                        </mat-form-field>
+                                    </mat-card-title>
+                                    <mat-card-subtitle style=" display: inline-flex;    vertical-align: middle;">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput type="number" placeholder="Telefono" [disabled]="true" [(ngModel)]="turno.telefono" id="turno_telefono_asistido">
+                                            <mat-error *ngIf="!turno.telefono">El telefono es requerido</mat-error>
+                                        </mat-form-field>
+                                    </mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <mat-slide-toggle class="example-margin" [(ngModel)]="turno.turnoFijo" name="turnoFijo" [disabled]="true">
+                                        Turno Fijo
+                                    </mat-slide-toggle>
+                                </mat-card-content>
+                            </mat-card>
 
                         </mat-expansion-panel>
                     </mat-accordion>
