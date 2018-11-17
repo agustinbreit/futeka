@@ -16,39 +16,39 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="nombre"><span jhiTranslate="futekaApp.turno.nombre">Nombre</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="telefono"><span jhiTranslate="futekaApp.turno.telefono">Telefono</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="fechaTurno"><span jhiTranslate="futekaApp.turno.fechaTurno">Fecha Turno</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="diaDeSemana"><span jhiTranslate="futekaApp.turno.diaDeSemana">Dia De Semana</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="diaDeSemana"><span jhiTranslate="futekaApp.turno.diaDeSemana">Dia De Semana</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="turnoFijo"><span jhiTranslate="futekaApp.turno.turnoFijo">Turno Fijo</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="estado"><span jhiTranslate="futekaApp.turno.estado">Estado</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="cancha.id"><span jhiTranslate="futekaApp.turno.cancha">Cancha</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="cancha.id"><span jhiTranslate="futekaApp.turno.cancha">Cancha</span> <span class="fa fa-sort"></span></th>-->
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let turno of turnos ;trackBy: trackId">
-                <td><a [routerLink]="['../turno', turno.id ]">{{turno.id}}</a></td>
+                <!--<td><a [routerLink]="['../turno', turno.id ]">{{turno.id}}</a></td>-->
                 <td>{{turno.nombre}}</td>
                 <td>{{turno.telefono}}</td>
                 <td>{{turno.fechaTurno | date:'medium'}}</td>
-                <td>{{turno.diaDeSemana}}</td>
+                <!--<td>{{turno.diaDeSemana}}</td>-->
                 <td>{{turno.turnoFijo}}</td>
                 <td jhiTranslate="{{'futekaApp.EstadoTurnoEnum.' + turno.estado}}">{{turno.estado}}</td>
-                <td>
-                    <div *ngIf="turno.cancha">
-                        <a [routerLink]="['../cancha', turno.cancha?.id ]" >{{turno.cancha?.id}}</a>
-                    </div>
-                </td>
+                <!--<td>-->
+                    <!--<div *ngIf="turno.cancha">-->
+                        <!--<a [routerLink]="['../cancha', turno.cancha?.id ]" >{{turno.cancha?.id}}</a>-->
+                    <!--</div>-->
+                <!--</td>-->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../turno', turno.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
+                        <!--<button type="submit"-->
+                                <!--[routerLink]="['../turno', turno.id ]"-->
+                                <!--class="btn btn-info btn-sm">-->
+                            <!--<span class="fa fa-eye"></span>-->
+                            <!--<span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
+                        <!--</button>-->
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'turno/'+ turno.id + '/edit'} }]"
                                 replaceUrl="true"

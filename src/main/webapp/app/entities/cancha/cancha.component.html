@@ -16,7 +16,7 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <!--<th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>-->
             <th jhiSortBy="nombre"><span jhiTranslate="futekaApp.cancha.nombre">Nombre</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="tipo"><span jhiTranslate="futekaApp.cancha.tipo">Tipo</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="precio"><span jhiTranslate="futekaApp.cancha.precio">Precio</span> <span class="fa fa-sort"></span></th>
@@ -25,18 +25,12 @@
             </thead>
             <tbody>
             <tr *ngFor="let cancha of canchas ;trackBy: trackId">
-                <td><a [routerLink]="['../cancha', cancha.id ]">{{cancha.id}}</a></td>
+                <!--<td><a [routerLink]="['../cancha', cancha.id ]">{{cancha.id}}</a></td>-->
                 <td>{{cancha.nombre}}</td>
                 <td jhiTranslate="{{'futekaApp.TipoCanchaEnum.' + cancha.tipo}}">{{cancha.tipo}}</td>
                 <td>{{cancha.precio}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../cancha', cancha.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'cancha/'+ cancha.id + '/edit'} }]"
                                 replaceUrl="true"

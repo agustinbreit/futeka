@@ -30,6 +30,11 @@ export class TurnoService {
         return this.http.put<Turno>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
+    cancelarTUrnosFuturos(turno: Turno): Observable<EntityResponseType> {
+        const copy = this.convert(turno);
+        return this.http.post<Turno>(this.resourceUrl + '/cancelarTUrnosFuturos', copy, { observe: 'response' })
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<Turno>(`${this.resourceUrl}/${id}`, { observe: 'response'})

@@ -14,7 +14,7 @@
                         <mat-panel-description>
 
                             <button type="button" class="btn btn-outline-primary">
-                                {{cancha.nombre+'  '}}({{cancha.tipo+'  '}}) <span class="badge badge-success">{{cancha.turnosLibres}}</span><span class="badge badge-danger" style="margin-left: 5px">{{cancha.turnosOcupados}}</span>
+                                {{cancha.nombre+'  '}}({{cancha.tipo+'  '}}) <span class="badge badge-success">{{cancha.turnosLibres}}</span><span class="badge badge-primary" style="margin-left: 5px">{{cancha.turnosOcupados}}</span>
                             </button>
 
                             <!--<span><strong>{{cancha.nombre+'  '}}({{cancha.tipo+'  '}})</strong></span><span class="badge badge-secondary">{{cancha.turnosLibres}}</span>-->
@@ -28,7 +28,7 @@
                                     <strong>{{turno.fechaTurno | date: 'HH:mm'}}</strong>
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    <strong [ngStyle]="{'color':getColor(turno)}">{{turno.estado}}</strong>
+                                    <strong [ngStyle]="{'color':getColor(turno)}">{{(turno.estado == 'RESERVADO')? turno.nombre: turno.estado}}</strong>
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
 
@@ -49,7 +49,7 @@
                                 </mat-card-content>
                                 <mat-card-actions align="end">
                                     <button mat-raised-button color="warn" style="flex: 1 1 auto;font-size: smaller;" (click)="darDeBajaDialog(turno)" *ngIf="turno.turnoFijo" >Dar De Baja</button>
-                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;font-size: smaller;" (click)="cancelarDialog(turno)" [disabled]="(turno.fechaTurno < nowForComparsion)">Cancelar Turno</button>
+                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;font-size: smaller;" (click)="cancelarDialog(turno)" >Cancelar Turno</button>
                                 </mat-card-actions>
                             </mat-card>
 
@@ -99,6 +99,9 @@
                                         Turno Fijo
                                     </mat-slide-toggle>
                                 </mat-card-content>
+                                <mat-card-actions align="end">
+                                    <button mat-raised-button color="primary" style="flex: 1 1 auto;font-size: smaller;" (click)="cancelarDialog(turno)" >Cancelar Turno</button>
+                                </mat-card-actions>
                             </mat-card>
 
                         </mat-expansion-panel>

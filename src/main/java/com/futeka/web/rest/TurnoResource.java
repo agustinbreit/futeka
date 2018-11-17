@@ -168,4 +168,17 @@ public class TurnoResource {
         EstadisticasDTO turno = turnoService.getEstadisticasByDates(estadisticasDTO);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(turno));
     }
+
+    /**
+     * GET  /turnos/:id : get the "id" turno.
+     *
+     * @param turno the id of the turno to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the turno, or with status 404 (Not Found)
+     */
+    @PostMapping("/turnos/cancelarTUrnosFuturos")
+    @Timed
+    public ResponseEntity<Turno> cancelarTUrnosFuturos(@RequestBody Turno turno) {
+        Turno _turno = turnoService.cancelarTUrnosFuturos(turno);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(_turno));
+    }
 }

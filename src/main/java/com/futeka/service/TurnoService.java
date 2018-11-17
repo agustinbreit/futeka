@@ -48,4 +48,6 @@ public interface TurnoService {
     Turno findOneByDate(Turno turno);
 
     EstadisticasDTO getEstadisticasByDates(EstadisticasDTO estadisticasDTO);
+
+    Turno cancelarTUrnosFuturos(Turno turno);
 }

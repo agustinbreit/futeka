@@ -132,7 +132,7 @@ export class UserMgmtComponent implements OnInit, OnDestroy {
             this.router.navigate(['/reset/finish'], {
                 queryParams:
                     {
-                        key: res._body
+                        key: res
                     }
             });
         });

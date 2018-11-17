@@ -141,7 +141,9 @@ public class TurnoServiceImpl implements TurnoService {
                         .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
                     if(turnoToday!=null){
                         if(turnoToday.getFechaTurno().isBefore(ZonedDateTime.now())) {
-                            turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
+                            if(!turnoToday.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
+                                turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
+                            }
                             turnoToday = turnoRepository.save(turnoToday);
                             turnosToReturn.add(turnoToday);
                         } else {
@@ -238,5 +240,28 @@ public class TurnoServiceImpl implements TurnoService {
         estadisticasDTO.setTurnosNoAsistidos(turnosCancelados);
 
         return estadisticasDTO;
+    }
+
+    @Override
+    public Turno cancelarTUrnosFuturos(Turno turno) {
+        ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
+        ZonedDateTime startTime = turno.getFechaTurno().withZoneSameLocal(zone);
+        startTime = startTime.plusSeconds(startTime.getOffset().getTotalSeconds());
+        ZonedDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        List<Turno> turnosToRemove = new ArrayList<Turno>();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+        QTurno qTurno = QTurno.turno;
+        BooleanBuilder booleanBuilder = new BooleanBuilder(qTurno.turnoFijo.eq(true).and(qTurno.cancha().id.eq(turno.getCancha().getId())).and(qTurno.diaDeSemana.eq(turno.getDiaDeSemana())).and(qTurno.fechaTurno.hour().eq(startTime.getHour())));
+        booleanBuilder.and(qTurno.fechaTurno.after(endTime));
+
+        turnosToRemove = queryFactory.from(qTurno)
+            .select(qTurno)
+            .where(booleanBuilder).fetch();
+        for(Turno turno1 : turnosToRemove) {
+            turnoRepository.delete(turno1);
+        }
+
+        return turnoRepository.save(turno);
+
     }
 }

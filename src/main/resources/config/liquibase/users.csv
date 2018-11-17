@@ -1,3 +1,9 @@
 id;login;password_hash;first_name;last_name;email;image_url;activated;lang_key;created_by;last_modified_by
+1;system;$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG;System;System;system@localhost;;true;es;system;system
+2;user;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;User;User;user@localhost;;true;es;system;system
 3;admin;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Administrator;Administrator;admin@localhost;;true;es;system;system
-4;user;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;User;User;user@localhost;;true;es;system;system
+4;lucho;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;Administrator;Administrator;luisbernardoguevara@hotmail.com;;true;es;system;system
+5;marce;$2a$10$eT.k1vaSf9ln.Nw7PSvsQO0b48zL7gBPp8eZqYZkVTCu2tFkT.YpG;Administrator;Administrator;marcecornejo@hotmail.com;;true;es;system;system
+6;futeka;$2a$10$dbdzECJq6F8rUlpiK6.F6e2tG.UqMvX18uhDpjB7LVSMd.ZgkUDh6;User;User;futeka@hotmail.com;;true;es;system;system
+7;futeka1;$2a$10$Pwp2WTefaTsYZh2DqMtICeVKRgRkZObAX1a7UODw0Mv.SL66aAKfa;User;User;futeka1@hotmail.com;;true;es;system;system
+8;mari;$2a$10$sMqV9YW9GGTjqNNM.IS//u/i/8c.SGuAr8lEVJxkB/QWi9nHNEGOO;Administrator;Administrator;mari@localhost;;true;es;system;system

@@ -2,9 +2,9 @@
     <mat-toolbar color="primary" style="background-color: #7a9235">
         <mat-toolbar-row>
             <mat-form-field class="example-full-width"  style="width:1px;visibility:hidden;">
-                <input matInput [matDatepicker]="picker" (dateChange)="cambiarFecha($event)">
+                <input matInput [matDatepicker]="picker" (dateChange)="cambiarFecha($event)" [(ngModel)]="dateToSart">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #picker></mat-datepicker>
+                <mat-datepicker touchUi #picker (closed)="onCloseDatePicker()"></mat-datepicker>
             </mat-form-field>
 
             <button mat-icon-button (click)="picker.open()">

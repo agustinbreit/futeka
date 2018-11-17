@@ -183,7 +183,9 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
                    cancha.turnosOcupados ++;
                } else {
                    cancha.turnosLibres ++;
-                   cancha.turnosOcupados --;
+                   if (cancha.turnosOcupados != 0) {
+                       cancha.turnosOcupados --;
+                   }
                }
             }
         }
@@ -212,7 +214,7 @@ export class TurnosDialogPopUpComponent {
             .transform(this.data.turno.fechaTurno, 'yyyy-MM-ddTHH:mm:ss');
         if (this.data.accion == 'baja') {
             this.data.turno.turnoFijo = false;
-            this.turnoService.update(this.data.turno).
+            this.turnoService.cancelarTUrnosFuturos(this.data.turno).
                 subscribe((res: HttpResponse<Turno>) => {
                     res.body.estado = EstadoTurnoEnum[res.body.estado];
                     this.dialogRef.close(res.body);
