@@ -116,7 +116,7 @@ public class TurnoServiceImpl implements TurnoService {
 
                     Turno turnoToday = queryFactory.from(qTurno)
                         .select(qTurno).distinct()
-                        .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
+                        .where(qTurno.fechaTurno.eq(startTime).and(qTurno.cancha().id.eq((turno.getCancha().getId())))).fetchFirst();
                     if(turnoToday!=null){
                         if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())){
                             turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
@@ -139,7 +139,7 @@ public class TurnoServiceImpl implements TurnoService {
                 }else if(_turno.getEstado().equals(EstadoTurnoEnum.ASISTIDO) || _turno.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
                     Turno turnoToday = queryFactory.from(qTurno)
                         .select(qTurno).distinct()
-                        .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
+                        .where(qTurno.fechaTurno.eq(startTime).and(qTurno.cancha().id.eq((turno.getCancha().getId())))).fetchFirst();
                     if(turnoToday!=null){
                         if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())) {
                             if(!turnoToday.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {

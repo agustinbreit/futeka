@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/
 import { DatePipe } from '@angular/common';
 import { NgForm} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 export interface DialogData {
     turno: Turno;
@@ -64,14 +65,15 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
         this.canchaService.query()
             .subscribe((res: HttpResponse<Cancha[]>) => {
                     this.canchas = res.body;
+                    const observableList = [];
                     for (const cancha of this.canchas) {
                         const turno = new Turno();
                         turno.cancha = cancha;
                         turno.diaDeSemana = now.getDay();
                         turno.fechaTurno = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()
                             , now.getSeconds())).toISOString();
-                        this.turnosService.findTurnosByCancha(turno)
-                            .subscribe((res: HttpResponse<Turno[]>) => {
+                        observableList.push( this.turnosService.findTurnosByCancha(turno)
+                            .map((res: HttpResponse<Turno[]>) => {
                                 cancha.turnos = res.body;
                                 let libres = 0;
                                 let turnosOcupados = 0;
@@ -89,8 +91,11 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
                                 cancha.turnosOcupados = turnosOcupados;
                                 this.valorEnCaja = this.valorEnCaja + (cancha.precio * turnosAsistidos);
                                 this.blocked = false;
-                            }, () => this.blocked = false);
+                            }));
                     }
+                    Observable.forkJoin(observableList).subscribe((res) => {
+                        this.blocked = false;
+                    });
                 }, () => this.blocked = false
             );
     }
