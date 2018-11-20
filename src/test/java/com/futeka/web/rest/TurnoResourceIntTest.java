@@ -22,10 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.List;
 
 import static com.futeka.web.rest.TestUtil.sameInstant;
@@ -51,8 +48,8 @@ public class TurnoResourceIntTest {
     private static final String DEFAULT_TELEFONO = "AAAAAAAAAA";
     private static final String UPDATED_TELEFONO = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_FECHA_TURNO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_FECHA_TURNO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final LocalDateTime DEFAULT_FECHA_TURNO = LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final LocalDateTime UPDATED_FECHA_TURNO = LocalDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final Integer DEFAULT_DIA_DE_SEMANA = 1;
     private static final Integer UPDATED_DIA_DE_SEMANA = 2;
@@ -173,7 +170,7 @@ public class TurnoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(turno.getId().intValue())))
             .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NOMBRE.toString())))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
-            .andExpect(jsonPath("$.[*].fechaTurno").value(hasItem(sameInstant(DEFAULT_FECHA_TURNO))))
+            .andExpect(jsonPath("$.[*].fechaTurno").value(hasItem(DEFAULT_FECHA_TURNO)))
             .andExpect(jsonPath("$.[*].diaDeSemana").value(hasItem(DEFAULT_DIA_DE_SEMANA)))
             .andExpect(jsonPath("$.[*].turnoFijo").value(hasItem(DEFAULT_TURNO_FIJO.booleanValue())))
             .andExpect(jsonPath("$.[*].estado").value(hasItem(DEFAULT_ESTADO.toString())));
@@ -192,7 +189,7 @@ public class TurnoResourceIntTest {
             .andExpect(jsonPath("$.id").value(turno.getId().intValue()))
             .andExpect(jsonPath("$.nombre").value(DEFAULT_NOMBRE.toString()))
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO.toString()))
-            .andExpect(jsonPath("$.fechaTurno").value(sameInstant(DEFAULT_FECHA_TURNO)))
+            .andExpect(jsonPath("$.fechaTurno").value(DEFAULT_FECHA_TURNO))
             .andExpect(jsonPath("$.diaDeSemana").value(DEFAULT_DIA_DE_SEMANA))
             .andExpect(jsonPath("$.turnoFijo").value(DEFAULT_TURNO_FIJO.booleanValue()))
             .andExpect(jsonPath("$.estado").value(DEFAULT_ESTADO.toString()));

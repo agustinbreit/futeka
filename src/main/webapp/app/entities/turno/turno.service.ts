@@ -103,7 +103,7 @@ export class TurnoService {
     private convert(turno: Turno): Turno {
         const copy: Turno = Object.assign({}, turno);
 
-        copy.fechaTurno = this.dateUtils.toDate(turno.fechaTurno);
+        //copy.fechaTurno = this.dateUtils.toDate(turno.fechaTurno);
         return copy;
     }
 }

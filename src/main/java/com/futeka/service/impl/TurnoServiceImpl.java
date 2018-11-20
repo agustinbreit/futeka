@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -94,8 +95,8 @@ public class TurnoServiceImpl implements TurnoService {
     @Override
     public Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable) {
         ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
-        ZonedDateTime startTime = turno.getFechaTurno().withZoneSameLocal(zone);
-        ZonedDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        LocalDateTime startTime = turno.getFechaTurno();
+        LocalDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59);
         List<Turno> turnosToReturn = new ArrayList<Turno>();
         do {
             JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
@@ -117,7 +118,7 @@ public class TurnoServiceImpl implements TurnoService {
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
                     if(turnoToday!=null){
-                        if(turnoToday.getFechaTurno().isBefore(ZonedDateTime.now())){
+                        if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())){
                             turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
                             turnoToday = turnoRepository.save(turnoToday);
                         }
@@ -140,7 +141,7 @@ public class TurnoServiceImpl implements TurnoService {
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime)).fetchFirst();
                     if(turnoToday!=null){
-                        if(turnoToday.getFechaTurno().isBefore(ZonedDateTime.now())) {
+                        if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())) {
                             if(!turnoToday.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
                                 turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
                             }
@@ -156,7 +157,7 @@ public class TurnoServiceImpl implements TurnoService {
                     }else {
                         Turno newTurno = new Turno();
                         newTurno.setFechaTurno(startTime);
-                        if(startTime.isBefore(ZonedDateTime.now())) {
+                        if(startTime.isBefore(LocalDateTime.now())) {
                             newTurno.setEstado(EstadoTurnoEnum.ASISTIDO);
                         }else {
                             newTurno.setEstado(EstadoTurnoEnum.RESERVADO);
@@ -180,7 +181,7 @@ public class TurnoServiceImpl implements TurnoService {
                 turnoToAdd.setCancha(turno.getCancha());
                 turnoToAdd.setEstado(EstadoTurnoEnum.LIBRE);
                 turnoToAdd.setDiaDeSemana(turno.getDiaDeSemana());
-                turnoToAdd.setFechaTurno(startTime.withZoneSameLocal(zone));
+                turnoToAdd.setFechaTurno(startTime);
                 turnosToReturn.add(turnoToAdd);
                 startTime = startTime.plusHours(1);
             }
@@ -206,8 +207,8 @@ public class TurnoServiceImpl implements TurnoService {
     @Override
     public EstadisticasDTO getEstadisticasByDates(EstadisticasDTO estadisticasDTO) {
         ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
-        ZonedDateTime startTime = estadisticasDTO.getFechaInicio().withZoneSameLocal(zone);
-        ZonedDateTime endTime = estadisticasDTO.getFechaFin().withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        LocalDateTime startTime = estadisticasDTO.getFechaInicio();
+        LocalDateTime endTime = estadisticasDTO.getFechaFin().withHour(23).withMinute(59).withSecond(59);
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         QTurno qTurno = QTurno.turno;
         BooleanBuilder booleanBuilder = null;
@@ -245,9 +246,9 @@ public class TurnoServiceImpl implements TurnoService {
     @Override
     public Turno cancelarTUrnosFuturos(Turno turno) {
         ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
-        ZonedDateTime startTime = turno.getFechaTurno().withZoneSameLocal(zone);
-        startTime = startTime.plusSeconds(startTime.getOffset().getTotalSeconds());
-        ZonedDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59).withZoneSameLocal(zone);
+        LocalDateTime startTime = turno.getFechaTurno();
+        //startTime = startTime.plusSeconds(startTime.get);
+        LocalDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59);
         List<Turno> turnosToRemove = new ArrayList<Turno>();
         JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
         QTurno qTurno = QTurno.turno;

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class Turno implements Serializable {
     private String telefono;
 
     @Column(name = "fecha_turno")
-    private ZonedDateTime fechaTurno;
+    private LocalDateTime fechaTurno;
 
     @Column(name = "dia_de_semana")
     private Integer diaDeSemana;
@@ -83,16 +84,16 @@ public class Turno implements Serializable {
         this.telefono = telefono;
     }
 
-    public ZonedDateTime getFechaTurno() {
+    public LocalDateTime getFechaTurno() {
         return fechaTurno;
     }
 
-    public Turno fechaTurno(ZonedDateTime fechaTurno) {
+    public Turno fechaTurno(LocalDateTime fechaTurno) {
         this.fechaTurno = fechaTurno;
         return this;
     }
 
-    public void setFechaTurno(ZonedDateTime fechaTurno) {
+    public void setFechaTurno(LocalDateTime fechaTurno) {
         this.fechaTurno = fechaTurno;
     }
 

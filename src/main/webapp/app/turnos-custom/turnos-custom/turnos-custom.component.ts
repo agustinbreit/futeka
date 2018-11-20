@@ -69,7 +69,7 @@ export class TurnosCustomComponent implements OnInit, OnDestroy {
                         turno.cancha = cancha;
                         turno.diaDeSemana = now.getDay();
                         turno.fechaTurno = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes()
-                            , now.getSeconds()));
+                            , now.getSeconds())).toISOString();
                         this.turnosService.findTurnosByCancha(turno)
                             .subscribe((res: HttpResponse<Turno[]>) => {
                                 cancha.turnos = res.body;

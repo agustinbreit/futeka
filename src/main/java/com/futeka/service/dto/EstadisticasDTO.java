@@ -3,11 +3,12 @@ package com.futeka.service.dto;
 import com.futeka.domain.Cancha;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class EstadisticasDTO {
-    private ZonedDateTime fechaInicio;
-    private ZonedDateTime fechaFin;
+    private LocalDateTime fechaInicio;
+    private LocalDateTime fechaFin;
     private Long turnosAsistidos;
     private Long turnosNoAsistidos;
     private Long reservasTotales;
@@ -55,19 +56,19 @@ public class EstadisticasDTO {
         this.perdidaTotal = perdidaTotal;
     }
 
-    public ZonedDateTime getFechaInicio() {
+    public LocalDateTime getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(ZonedDateTime fechaInicio) {
+    public void setFechaInicio(LocalDateTime fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public ZonedDateTime getFechaFin() {
+    public LocalDateTime getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(ZonedDateTime fechaFin) {
+    public void setFechaFin(LocalDateTime fechaFin) {
         this.fechaFin = fechaFin;
     }
 

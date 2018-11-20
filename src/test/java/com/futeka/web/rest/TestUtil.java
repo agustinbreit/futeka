@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 
@@ -98,8 +100,8 @@ public class TestUtil {
      * Creates a matcher that matches when the examined string reprensents the same instant as the reference datetime
      * @param date the reference datetime against which the examined string is checked
      */
-    public static ZonedDateTimeMatcher sameInstant(ZonedDateTime date) {
-        return new ZonedDateTimeMatcher(date);
+    public static ZonedDateTimeMatcher sameInstant(LocalDateTime date) {
+        return new ZonedDateTimeMatcher(date.atZone(ZoneId.systemDefault()));
     }
 
     /**
