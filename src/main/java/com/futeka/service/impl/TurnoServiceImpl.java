@@ -10,6 +10,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 
 /**
@@ -94,7 +96,10 @@ public class TurnoServiceImpl implements TurnoService {
 
     @Override
     public Page<Turno> findTurnosByCancha(Turno turno, Pageable pageable) {
-        ZoneId zone = ZoneId.of("America/Argentina/Buenos_Aires");
+//        ZoneId zone = ZoneId.of("America/New_York");
+        LocalDateTime nowWithTime = LocalDateTime.now().plusSeconds(TimeZone.getTimeZone(ZoneId.of("America/Argentina/Buenos_Aires")).getRawOffset()/1000);
+        log.info("NOW: "+nowWithTime.toString());
+
         LocalDateTime startTime = turno.getFechaTurno();
         LocalDateTime endTime = startTime.withHour(23).withMinute(59).withSecond(59);
         List<Turno> turnosToReturn = new ArrayList<Turno>();
@@ -118,7 +123,9 @@ public class TurnoServiceImpl implements TurnoService {
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime).and(qTurno.cancha().id.eq((turno.getCancha().getId())))).fetchFirst();
                     if(turnoToday!=null){
-                        if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())){
+                        if(turnoToday.getFechaTurno().isBefore(nowWithTime)){
+                            log.info("122 _turno:" + _turno.toString());
+                            log.info("123 turnoToday:" + turnoToday.toString());
                             turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
                             turnoToday = turnoRepository.save(turnoToday);
                         }
@@ -141,8 +148,10 @@ public class TurnoServiceImpl implements TurnoService {
                         .select(qTurno).distinct()
                         .where(qTurno.fechaTurno.eq(startTime).and(qTurno.cancha().id.eq((turno.getCancha().getId())))).fetchFirst();
                     if(turnoToday!=null){
-                        if(turnoToday.getFechaTurno().isBefore(LocalDateTime.now())) {
+                        if(turnoToday.getFechaTurno().isBefore(nowWithTime)) {
                             if(!turnoToday.getEstado().equals(EstadoTurnoEnum.CANCELADO)) {
+                                log.info("148 _turno:" + _turno.toString());
+                                log.info("149 turnoToday: " + turnoToday.toString());
                                 turnoToday.setEstado(EstadoTurnoEnum.ASISTIDO);
                             }
                             turnoToday = turnoRepository.save(turnoToday);
@@ -157,7 +166,9 @@ public class TurnoServiceImpl implements TurnoService {
                     }else {
                         Turno newTurno = new Turno();
                         newTurno.setFechaTurno(startTime);
-                        if(startTime.isBefore(LocalDateTime.now())) {
+                        if(startTime.isBefore(nowWithTime)) {
+                            log.info("165 _turno:" + _turno.toString());
+                            log.info("166 startTime: " + startTime.toString());
                             newTurno.setEstado(EstadoTurnoEnum.ASISTIDO);
                         }else {
                             newTurno.setEstado(EstadoTurnoEnum.RESERVADO);
