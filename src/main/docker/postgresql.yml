@@ -2,8 +2,8 @@ version: '2'
 services:
     futeka-postgresql:
         image: postgres:9.6.5
-        # volumes:
-        #     - ~/volumes/jhipster/Futeka/postgresql/:/var/lib/postgresql/data/
+         volumes:
+             - ~/volumes/jhipster/Futeka/postgresql/:/var/lib/postgresql/data/
         environment:
             - POSTGRES_USER=Futeka
             - POSTGRES_PASSWORD=
